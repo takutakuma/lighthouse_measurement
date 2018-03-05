@@ -1,0 +1,6 @@
+{
+  "name": "agile-caverns-63132",
+  "keywords": ["node"],
+  "image": "heroku/nodejs",
+  "GOOGLE_CHROME_CHANNEL":"stable"
+}
