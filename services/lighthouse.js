@@ -24,15 +24,7 @@ function launchChromeAndRunLighthouse(url, opts, config = null) {
 const opts = {
   port: 0,
   autoSelectChrome: true, // False to manually select which Chrome install.
-  chromeFlags: [
-    '--show-paint-rects',
-    '--headless',
-    '--disable-device-emulation',
-    '--disable-gpu',
-    '--enable-logging',
-    '--no-sandbox',
-    '--remote-debugging-port=9222'
-  ]
+  chromeFlags: ['--headless', '--disable-gpu', '--no-sandbox']
 };
 
 // Usage:
