@@ -30,7 +30,8 @@ const opts = {
     '--disable-device-emulation',
     '--disable-gpu',
     '--enable-logging',
-    '--no-sandbox'
+    '--no-sandbox',
+    '--remote-debugging-port=9222'
   ]
 };
 
