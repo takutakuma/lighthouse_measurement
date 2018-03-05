@@ -8,6 +8,7 @@ process.on('unhandledRejection', console.dir);
 router.get('/', async function(req, res, next) {
   console.log(`url:${req.query.url}`);
   const results = await lighthouse(req.query.url);
+  console.log(results);
   res.json(results);
 });
 
