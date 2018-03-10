@@ -11,12 +11,26 @@ function launchChromeAndRunLighthouse(url, opts, config = null) {
       return lighthouse(url, opts, config).then(results => {
         // The gathered artifacts are typically removed as they can be quite large (~50MB+)
         delete results.artifacts;
-        return chrome.kill().then(() =>
-          results.reportCategories.map(data => ({
-            name: data.name,
-            score: data.score
-          }))
-        );
+        return chrome.kill().then(() => {
+          const scoreMap = Object.entries(results.audits).reduce(
+            (acc, [key, a]) => {
+              if (typeof a.score === 'number') {
+                return Object.assign({}, acc, { [key]: a.score });
+              }
+              return acc;
+            },
+            {}
+          );
+
+          const scoreCategories = Object.entries(
+            results.reportCategories
+          ).reduce((acc, [key, a]) => {
+            return Object.assign({}, acc, { [a.name]: a.score });
+            return acc;
+          }, {});
+
+          return Object.assign(scoreCategories, scoreMap);
+        });
       });
     });
 }
