@@ -12,7 +12,7 @@
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
     "express": "~4.15.5",
-    "lighthouse": "^2.9.1",
+    "lighthouse": "^2.9.2",
     "make-dir": "^1.2.0",
     "morgan": "~1.9.0",
     "serve-favicon": "~2.4.5"
