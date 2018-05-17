@@ -1,20 +1,18 @@
 const lighthouse = require('lighthouse');
 const chromeLauncher = require('chrome-launcher');
 
-const perfConfig = require('lighthouse/lighthouse-core/config/perf.json');
-
 function launchChromeAndRunLighthouse(url, opts, config = null) {
   return chromeLauncher
     .launch({ chromeFlags: opts.chromeFlags })
     .then(chrome => {
       opts.port = chrome.port;
       return lighthouse(url, opts, config).then(results => {
-        // The gathered artifacts are typically removed as they can be quite large (~50MB+)
         delete results.artifacts;
+        delete results.report;
         return chrome.kill().then(() => {
-          const scoreMap = Object.entries(results.audits).reduce(
+          const scoreMap = Object.entries(results.lhr.audits).reduce(
             (acc, [key, a]) => {
-              if (typeof a.score === 'number') {
+              if (a.scoreDisplayMode === 'numeric') {
                 return Object.assign({}, acc, { [key]: a.score });
               }
               return acc;
@@ -22,12 +20,13 @@ function launchChromeAndRunLighthouse(url, opts, config = null) {
             {}
           );
 
-          const scoreCategories = Object.entries(
-            results.reportCategories
-          ).reduce((acc, [key, a]) => {
-            return Object.assign({}, acc, { [a.name]: a.score });
-            return acc;
-          }, {});
+          const scoreCategories = Object.entries(results.lhr.categories).reduce(
+            (acc, [key, a]) => {
+              return Object.assign({}, acc, { [a.title]: a.score });
+              return acc;
+            },
+            {}
+          );
 
           return Object.assign(scoreCategories, scoreMap);
         });
